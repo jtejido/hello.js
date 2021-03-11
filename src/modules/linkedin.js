@@ -31,9 +31,7 @@
 			base: 'https://api.linkedin.com/v2/',
 
 			get: {
-				me: 'people/~:(picture-url,first-name,last-name,id,formatted-name,email-address)',
-
-				// See: http://developer.linkedin.com/documents/get-network-updates-and-statistics-api
+				me: 'me?fields=id,localizedFirstName,localizedLastName',
 				'me/share': 'people/~/network/updates?count=@{limit|250}'
 			},
 
@@ -80,7 +78,6 @@
 
 			wrap: {
 				me: function(o) {
-					formatError(o);
 					formatUser(o);
 					return o;
 				},
@@ -89,7 +86,6 @@
 				'me/following': formatFriends,
 				'me/followers': formatFriends,
 				'me/share': function(o) {
-					formatError(o);
 					paging(o);
 					if (o.values) {
 						o.data = o.values.map(formatUser);
@@ -104,7 +100,6 @@
 				},
 
 				'default': function(o, headers) {
-					formatError(o);
 					empty(o, headers);
 					paging(o);
 				}
@@ -112,10 +107,6 @@
 
 			jsonp: function(p, qs) {
 				formatQuery(qs);
-				if (p.method === 'get') {
-					qs.format = 'jsonp';
-					qs['error-callback'] = p.callbackID;
-				}
 			},
 
 			xhr: function(p, qs) {
@@ -148,16 +139,15 @@
 			return;
 		}
 
-		o.first_name = o.firstName;
-		o.last_name = o.lastName;
-		o.name = o.formattedName || (o.first_name + ' ' + o.last_name);
-		o.thumbnail = o.pictureUrl;
-		o.email = o.emailAddress;
+		o.first_name = o.localizedFirstName;
+		o.last_name = o.localizedLastName;
+		o.name = (o.localizedFirstName + ' ' + o.localizedLastName);
+		o.thumbnail = '';
+		o.email = '';
 		return o;
 	}
 
 	function formatFriends(o) {
-		formatError(o);
 		paging(o);
 		if (o.values) {
 			o.data = o.values.map(formatUser);
