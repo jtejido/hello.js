@@ -20,7 +20,6 @@
 				basic: 'openid profile',
 				email: 'email',
 				birthday: 'https://www.googleapis.com/auth/user.birthday.read',
-				location: 'https://www.googleapis.com/auth/user.addresses.read',
 				phone: 'https://www.googleapis.com/auth/user.phonenumbers.read',
 				events: '',
 				photos: 'https://picasaweb.google.com/data/',
