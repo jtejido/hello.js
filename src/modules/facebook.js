@@ -22,6 +22,8 @@
 				email: 'email',
 				share: 'user_posts',
 				birthday: 'user_birthday',
+				location: '',
+				phone: '',
 				events: 'user_events',
 				photos: 'user_photos',
 				videos: 'user_videos',
